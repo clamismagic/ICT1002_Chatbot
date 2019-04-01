@@ -43,7 +43,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "chat1002.h"
-#include <stdlib.h>
+#include <stdlib.h> //for rand function
+
 
  
 /*
