@@ -43,7 +43,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "chat1002.h"
- 
+#include <stdlib.h>
+
  
 /*
  * Get the name of the chatbot.
@@ -307,11 +308,25 @@ int chatbot_do_save(int inc, char *inv[], char *response, int n) {
  *  0, otherwise
  */
 int chatbot_is_smalltalk(const char *intent) {
-	
-	/* to be implemented */
-	
-	return 0;
- 
+
+    int ret;
+    int i = 0;
+	int its;
+    char *GREETING_INPUTS[5] = {
+            "hello", "hi", "greetings", "sup", "hey"
+    };
+    for (i = 0; i < 5; i++) {
+        ret = compare_token(intent, GREETING_INPUTS[i]);
+        its = strncmp(intent, "it's", 4); // this is used to check if intent contains "it's"
+        if (ret == 0) {
+            return 1;
+
+        }
+        if (its == 0) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 
@@ -325,11 +340,28 @@ int chatbot_is_smalltalk(const char *intent) {
  *   0, if the chatbot should continue chatting
  *   1, if the chatbot should stop chatting (e.g. the smalltalk was "goodbye" etc.)
  */
-int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
-	
-	/* to be implemented */
-	
-	return 0;
-	
-}
+ int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
+
+    char *GREETING_OUTPUTS[5] = {
+            "hello", "hi", "greetings", "sup", "hey"
+    };
+    int i;
+    int ret;
+    int its;
+    for (i = 0; i < 5; i++) {
+        ret = compare_token(inv[0], GREETING_OUTPUTS[i]);// this is used to check if intent contains "it's"
+        if (ret == 0) {
+            int tt = rand() % 5;
+            snprintf(response, n, GREETING_OUTPUTS[tt]);
+        }
+        its = strncmp(inv[0], "it's", 4);
+        if (its == 0) {
+            snprintf(response, n, "Indeed it is.");
+        }
+    }
+
+
+    return 0;
+
+} 
   
