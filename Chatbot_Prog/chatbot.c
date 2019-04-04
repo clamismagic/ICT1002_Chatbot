@@ -157,9 +157,9 @@ int chatbot_do_exit(int inc, char *inv[], char *response, int n) {
  */
 int chatbot_is_load(const char *intent) {
 	
-	/* to be implemented */
-	
-	return 0;
+	/* to be implemented  PA*/
+	/*When user types in load(case-insensitive) */
+	return compare_token(intent, "load") == 0;
 	
 }
 
@@ -175,9 +175,36 @@ int chatbot_is_load(const char *intent) {
  */
 int chatbot_do_load(int inc, char *inv[], char *response, int n) {
 	
-	/* to be implemented */
+	/* to be implemented  PA*/
+	 /** Stores the number of responses read from a given file
+    *   Sets this value to 0
+    */
+    int no_of_responses_read = 0;
+    char filename[MAX_ENTITY];
+    char removed[MAX_ENTITY];
+    char * ignorelist[] = {"from"};
+
+	getEntity(inc, inv, ignorelist, 1, filename, removed);
+
+    /** Open file for reading*/
+    FILE * file = fopen(filename, "r");
+    
+    /** Checks if file open was successfully executed, otherwise print the error*/
+    if (file == NULL) {
+        snprintf(response, n, "%s does not exist",filename);
+    }
+    else {
+        /** Knowledge_read reads the given file, and loads current knowledge base with given file, returns no of lines read */
+        no_of_responses_read = knowledge_read(file);
+        /** Close the file */
+        fclose(file);
+        /** Prints no of responses read onto the buffer*/
+        snprintf(response, n, "Read %d responses from %s", no_of_responses_read,filename);
+    }
+    /** Always return 0 to continue chatting after loading knowledge */
+    return 0;
 	 
-	return 0;
+	
 	 
 }
 
